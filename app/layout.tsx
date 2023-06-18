@@ -1,6 +1,8 @@
 import { ReactNode } from 'react'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import Player from './components/player'
+import { cn } from './lib/index'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -12,7 +14,19 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body
+        className={cn(
+          'flex h-screen w-screen flex-col overflow-hidden',
+          inter.className,
+        )}
+      >
+        {children}
+        <Player
+          coverUrl="https://i.scdn.co/image/ab67616d0000b273cd945b4e3de57edd28481a3f"
+          title="IMY2(With Kid Cudi"
+          artist="Drake, Kid Cudi"
+        />
+      </body>
     </html>
   )
 }
