@@ -2,50 +2,45 @@
 
 import { cn } from '@/app/lib'
 import Image from 'next/image'
-import { HeartIcon } from '@heroicons/react/24/outline'
-import { HeartIcon as HeartIconSolid } from '@heroicons/react/24/solid'
+import { Heart } from 'iconoir-react'
+import { usePlaybackState } from 'react-spotify-web-playback-sdk'
 
-type CurrentPayingCardProps = {
-  coverUrl: string
-  title: string
-  artist: string
-  liked?: boolean
-}
+export default function CurrentPayingCard() {
+  const playbackState = usePlaybackState()
 
-export default function CurrentPayingCard({
-  coverUrl,
-  title,
-  artist,
-  liked,
-}: CurrentPayingCardProps) {
-  const LikeIcon = liked ? HeartIconSolid : HeartIcon
   return (
     <div
       className={cn(
-        'flex h-16 w-fit items-center gap-x-4 rounded-md  px-2 py-2.5 transition',
+        'flex h-16 w-[400px] items-center gap-x-4 overflow-hidden rounded-md  px-2 py-2.5 transition',
       )}
     >
       <Image
-        className={cn('object-fit  h-12 w-12  rounded-md object-cover')}
-        alt={`${title} cover`}
-        src={coverUrl}
+        className={cn('object-fit  h-14 w-14  rounded-md object-cover')}
+        alt="cover"
+        src={`${
+          playbackState &&
+          playbackState.track_window.current_track.album.images[0].url
+        }`}
         width={48}
         height={48}
         unoptimized
       />
+
       <div className={cn('flex flex-col')}>
-        <span className="cursor-pointer whitespace-nowrap text-white hover:underline">
-          {title}
+        <span className="line-clamp-2 cursor-pointer  whitespace-nowrap text-base text-white hover:underline">
+          {playbackState && playbackState.track_window.current_track.name}
         </span>
-        <span className="cursor-pointer text-sm text-neutral-400 hover:underline">
-          {artist}
+        <span className="line-clamp-2 cursor-pointer  text-sm text-neutral-400 hover:underline">
+          {playbackState &&
+            playbackState.track_window.current_track.artists
+              .map((artist) => artist.name)
+              .join(',')}
         </span>
       </div>
 
-      <LikeIcon
+      <Heart
         className={cn(
           'h-8 w-8 cursor-pointer text-neutral-400 transition hover:text-white',
-          liked && 'text-green-500 ',
         )}
       />
     </div>

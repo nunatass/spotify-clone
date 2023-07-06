@@ -3,34 +3,51 @@
 import { cn } from '@/app/lib'
 import { useSplitterWidthStore } from '@/app/hooks/useSplitterWidthStore'
 import Image from 'next/image'
+import Link from 'next/link'
+import useLibraryStore from '@/app/hooks/useLibraryStore'
+import { ListType } from '@/app/hooks/useLibrary'
 
 type LibraryCardItemProps = {
   coverUrl: string
   title: string
   subtitle: string
-  type: string
   active?: boolean
+  playlistId: string
 }
 
 export default function LibraryCardItem({
   coverUrl,
   title,
   subtitle,
-  type,
+  playlistId,
 }: LibraryCardItemProps) {
-  const { isLeftSideClose } = useSplitterWidthStore()
+  const { isLeftSideClosed } = useSplitterWidthStore()
+  const { selectedListType } = useLibraryStore()
+  function getPageIdBySelectedListType(selectedListType: ListType) {
+    switch (selectedListType) {
+      case 'Albums':
+        return 'album'
+      case 'Artists':
+        return 'artist'
+      case 'Playlists':
+        return 'playlist'
+      default:
+        return 'playlist'
+    }
+  }
 
   return (
-    <div
+    <Link
       className={cn(
-        'flex h-16 w-full items-center gap-x-4  rounded-md px-2 py-2.5 transition hover:bg-neutral-400/10',
-        isLeftSideClose && 'group w-16 justify-center p-1.5',
+        'flex h-16 w-full max-w-[300px] items-center gap-x-4  rounded-md px-2 py-2.5 transition hover:bg-neutral-400/10',
+        isLeftSideClosed && 'group w-16 justify-center p-1.5',
       )}
+      href={`/${getPageIdBySelectedListType(selectedListType)}/${playlistId}`}
     >
       <Image
         className={cn(
           'object-fit  h-12 w-12  rounded-md object-cover',
-          isLeftSideClose && 'h-12  w-12 ',
+          isLeftSideClosed && 'h-12  w-12 ',
         )}
         alt={`${title} cover`}
         src={coverUrl}
@@ -41,8 +58,8 @@ export default function LibraryCardItem({
       <div
         className={cn(
           'flex flex-col',
-          isLeftSideClose &&
-            'absolute left-[90px] z-10 hidden h-fit rounded-md bg-neutral-800 p-1 transition-all duration-1000 ease-in-out group-hover:flex',
+          isLeftSideClosed &&
+            'absolute left-[90px] z-10 hidden h-fit rounded-md bg-neutral-800 p-2 transition-all duration-1000 ease-in-out group-hover:flex',
         )}
       >
         <span className="whitespace-nowrap text-white">{title}</span>
@@ -50,6 +67,6 @@ export default function LibraryCardItem({
           {subtitle}
         </span>
       </div>
-    </div>
+    </Link>
   )
 }

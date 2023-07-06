@@ -23,7 +23,7 @@ export default function SidebarButton({
   const pathname = usePathname()
   const isActive = pathname === href
 
-  const { isLeftSideClose } = useSplitterWidthStore()
+  const { isLeftSideClosed } = useSplitterWidthStore()
 
   return (
     <Link
@@ -31,7 +31,7 @@ export default function SidebarButton({
       className={cn(
         'text-md  group flex h-auto w-fit cursor-pointer items-center justify-center  gap-x-4 py-2 font-medium  text-neutral-400 transition-all hover:text-white',
         isActive && 'text-white',
-        isLeftSideClose && 'w-full gap-x-0 ',
+        isLeftSideClosed && 'w-full gap-x-0 ',
       )}
       onClick={onClick}
     >
@@ -43,7 +43,7 @@ export default function SidebarButton({
       <span
         className={cn(
           'visible transition-all',
-          isLeftSideClose &&
+          isLeftSideClosed &&
             'absolute left-[90px] z-10 hidden h-fit rounded-md bg-neutral-800 p-2 text-sm transition-all duration-1000 ease-in-out group-hover:flex  ',
         )}
       >
