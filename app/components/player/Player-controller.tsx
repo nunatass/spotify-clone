@@ -26,10 +26,11 @@ export default function PlayerController() {
   const [repeatMode, setRepeatMode] = useState(0)
   const [paused, setPaused] = useState(true)
 
-  function handleTogglePlayButton() {
+  async function handleTogglePlayButton() {
     if (player) {
-      player.togglePlay().then((value) => {
-        console.log('handleTogglePlay', value)
+      await player.togglePlay()
+      setPaused((prev) => {
+        return !prev
       })
     }
   }

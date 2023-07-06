@@ -3,7 +3,6 @@ import { cn } from '@/app/lib'
 import Image from 'next/image'
 import { Play, Pause } from 'iconoir-react'
 import useSongInfoStore from '@/app/hooks/useSongInfoStore'
-import { useState } from 'react'
 import Link from 'next/link'
 
 type HorizontalCardProps = {
@@ -20,25 +19,6 @@ export default function HorizontalCard({
   trackId,
 }: HorizontalCardProps) {
   const { setCurrentTrackId, currentTrackId } = useSongInfoStore()
-  // const spotifyApi = useSpotify()
-  const [linkPath, setLinkPath] = useState('/')
-
-  // useEffect(() => {
-  //   async function fetchSongData() {
-  //     if (spotifyApi.getAccessToken() && trackId) {
-  //       const songData = await fetch(
-  //         `https://api.spotify.com/v1/tracks/${trackId}`,
-  //         {
-  //           headers: { Authorization: `Bearer ${spotifyApi.getAccessToken()}` },
-  //         },
-  //       ).then((res) => res.json())
-  //       songData.album.id!
-  //         ? setLinkPath(`/playlist/${songData.album.id!}`)
-  //         : setLinkPath('/')
-  //     }
-  //   }
-  //   fetchSongData()
-  // }, [trackId, spotifyApi])
 
   const Icon = currentTrackId === trackId ? Pause : Play
 
@@ -60,7 +40,7 @@ export default function HorizontalCard({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={handleClick}
-      href={linkPath}
+      href={'/'}
     >
       <Image
         className={cn(
