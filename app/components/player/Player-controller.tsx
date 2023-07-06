@@ -24,19 +24,22 @@ export default function PlayerController() {
   const [position, setPosition] = useState(0)
   const [isOnShuffleMode, setIsOnShuffleMode] = useState(false)
   const [repeatMode, setRepeatMode] = useState(0)
+  const [paused, setPaused] = useState(true)
 
   function handleTogglePlayButton() {
-    if (playbackState) {
-      playbackState.paused = !playbackState.paused
+    if (player) {
+      player.togglePlay().then((value) => {
+        console.log('handleTogglePlay', value)
+      })
     }
   }
 
-  function handlePlayerNext() {
-    player && player.nextTrack()
+  async function handlePlayerNext() {
+    player && (await player.nextTrack())
   }
 
-  function handlePlayerPrevious() {
-    player && player.previousTrack()
+  async function handlePlayerPrevious() {
+    player && (await player.previousTrack())
   }
 
   useEffect(() => {
@@ -45,7 +48,6 @@ export default function PlayerController() {
       setPosition(playbackState.position)
       setRepeatMode(playbackState.repeat_mode)
       setIsOnShuffleMode(playbackState.shuffle)
-      console.log(playbackState.repeat_mode)
     }
   }, [playbackState])
 
@@ -69,7 +71,7 @@ export default function PlayerController() {
           )}
           onClick={handlePlayerPrevious}
         >
-          {playbackState && playbackState.paused ? (
+          {!paused ? (
             <Play
               className="h-6 w-6 cursor-pointer text-black  transition-all "
               onClick={handleTogglePlayButton}
