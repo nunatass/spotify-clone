@@ -1,11 +1,11 @@
 'use client'
 
+import useSpotify from '@/app/hooks/useSpotify'
 import { useCallback } from 'react'
+import { WebPlaybackSDK } from 'react-spotify-web-playback-sdk'
 import PlayerController from './Player-controller'
 import CurrentPayingCard from './current-paying-card'
 import PlayerSettings from './player-settings'
-import useSpotify from '@/app/hooks/useSpotify'
-import { WebPlaybackSDK } from 'react-spotify-web-playback-sdk'
 
 export default function Player() {
   const spotifyApi = useSpotify()

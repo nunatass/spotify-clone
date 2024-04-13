@@ -1,7 +1,8 @@
 'use client'
 
-import { cn } from '@/app/lib'
 import { useSplitterWidthStore } from '@/app/hooks/useSplitterWidthStore'
+import { cn } from '@/app/lib'
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -22,6 +23,7 @@ export default function SidebarButton({
 }: SidebarButtonProps) {
   const pathname = usePathname()
   const isActive = pathname === href
+  const { data: session } = useSession()
 
   const { isLeftSideClosed } = useSplitterWidthStore()
 
@@ -32,6 +34,8 @@ export default function SidebarButton({
         'text-md  group flex h-auto w-fit cursor-pointer items-center justify-center  gap-x-4 py-2 font-medium  text-neutral-400 transition-all hover:text-white',
         isActive && 'text-white',
         isLeftSideClosed && 'w-full gap-x-0 ',
+        session && 'hover:text-white',
+        !session && 'disabled',
       )}
       onClick={onClick}
     >

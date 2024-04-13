@@ -1,22 +1,26 @@
+'use client'
+
+import { cn, msToMinSec } from '@/app/lib'
 import {
-  Play,
-  Pause,
-  Repeat,
   Forward,
+  Pause,
+  Play,
+  Repeat,
+  RepeatOnce,
   Rewind,
   Shuffle,
-  RepeatOnce,
 } from 'iconoir-react'
-import Slider from '../slider'
-import { cn, msToMinSec } from '@/app/lib'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import {
   usePlaybackState,
   useSpotifyPlayer,
 } from 'react-spotify-web-playback-sdk'
+import Slider from '../slider'
 
 export default function PlayerController() {
   const player = useSpotifyPlayer()
+  const { data: session } = useSession()
 
   const playbackState = usePlaybackState(true, 1000)
 
@@ -53,53 +57,65 @@ export default function PlayerController() {
   }, [playbackState])
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center gap-y-2  text-white/70">
+    <div className="flex h-full w-full flex-col items-center justify-center  gap-y-2 text-white/70">
       <div className="flex w-full items-center justify-center gap-x-4  ">
         <Shuffle
           className={cn(
             'h-6 w-6 cursor-pointer brightness-75',
-            player && 'hover:text-white',
+            player && session && 'hover:text-white',
             isOnShuffleMode && 'text-green-500 hover:brightness-100',
           )}
         />
         <Rewind
-          className={cn('h-6 w-6 cursor-pointer', player && 'hover:text-white')}
+          className={cn(
+            'h-6 w-6',
+            player && session && 'cursor-pointer hover:text-white',
+          )}
         />
         <div
           className={cn(
             'flex h-8 w-8 items-center justify-center rounded-full bg-neutral-400  transition ',
-            player && 'bg-white/90 hover:scale-110 hover:bg-white ',
+            player && session && 'bg-white/90 hover:scale-110 hover:bg-white ',
           )}
           onClick={handlePlayerPrevious}
         >
           {!paused ? (
             <Play
-              className="h-6 w-6 cursor-pointer text-black  transition-all "
+              className={cn(
+                'h-6 w-6 cursor-pointer text-black  transition-all ',
+                player && session && 'cursor-pointer',
+              )}
               onClick={handleTogglePlayButton}
             />
           ) : (
             <Pause
-              className="h-6 w-6 cursor-pointer text-black  transition-all "
+              className={cn(
+                'h-6 w-6 cursor-pointer text-black  transition-all ',
+                player && session && 'cursor-pointer',
+              )}
               onClick={handleTogglePlayButton}
             />
           )}
         </div>
         <Forward
-          className={cn('h-6 w-6 cursor-pointer', player && 'hover:text-white')}
+          className={cn(
+            'h-6 w-6 ',
+            player && session && 'cursor-pointer hover:text-white',
+          )}
           onClick={handlePlayerNext}
         />
         {repeatMode === 2 ? (
           <RepeatOnce
             className={cn(
-              'h-6 w-6 cursor-pointer brightness-75',
-              player && 'hover:text-white',
+              'h-6 w-6  brightness-75',
+              player && session && 'cursor-pointer hover:text-white',
             )}
           />
         ) : (
           <Repeat
             className={cn(
-              'h-6 w-6 cursor-pointer brightness-75',
-              player && 'hover:text-white',
+              'h-6 w-6  brightness-75',
+              player && session && 'cursor-pointer hover:text-white',
               repeatMode > 1 && 'text-green-500 hover:brightness-100',
             )}
           />
