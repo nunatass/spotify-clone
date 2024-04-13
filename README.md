@@ -19,7 +19,6 @@ This project was created to demonstrate the capabilities of modern frontend tech
 
 ## Features
 
-- Responsive design that looks great on both desktop and mobile devices
 - Fetches real data from Spotify using their Web API
 - Advanced features such as music control, playlists, and search functionality
 
