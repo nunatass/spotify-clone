@@ -1,14 +1,16 @@
 'use client'
 
 import { cn } from '@/app/lib'
-import Image from 'next/image'
 import { Heart } from 'iconoir-react'
+import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { usePlaybackState } from 'react-spotify-web-playback-sdk'
 
 export default function CurrentPayingCard() {
   const playbackState = usePlaybackState()
+  const { data: session } = useSession()
 
-  return (
+  return session ? (
     <div
       className={cn(
         'flex h-16 w-[400px] items-center gap-x-4 overflow-hidden rounded-md  px-2 py-2.5 transition',
@@ -38,6 +40,19 @@ export default function CurrentPayingCard() {
         </span>
       </div>
 
+      <Heart
+        className={cn(
+          'h-8 w-8 cursor-pointer text-neutral-400 transition hover:text-white',
+        )}
+      />
+    </div>
+  ) : (
+    <div
+      className={cn(
+        'flex h-16 w-[400px] items-center gap-x-4 overflow-hidden rounded-md  px-2 py-2.5 transition',
+      )}
+    >
+      <div className={cn('h-16 w-16  rounded-md bg-slate-200 ')} />
       <Heart
         className={cn(
           'h-8 w-8 cursor-pointer text-neutral-400 transition hover:text-white',
